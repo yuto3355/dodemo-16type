@@ -238,10 +238,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <div class="in">
       <h2>よくある質問</h2>
       <div class="faq">
-        <details><summary>このテスト、答えるのに何分かかりますか？</summary><p>数分です。数分だとしても失った時間はもとに戻りませんよ。</p></details>
-        <details><summary>タイプを変えたいときは？</summary><p>体を洗う順番を変えてください。</p></details>
-        <details><summary>エレベーターの中で受けてもいいですか？</summary><p>はい。「閉」ボタンは押してください。</p></details>
-        <details><summary>はじめて受けるのですが、準備は必要ですか？</summary><p>いりません。</p></details>
         <details><summary>スマホでも受けられますか？</summary><p>はい。お風呂では受けないでください。</p></details>
         <details><summary>ベストな答え方はありますか？</summary><p>ありません。直感でどうぞ。</p></details>
         <details><summary>テストは無料ですか？</summary><p>はい。会員登録もいりません。</p></details>
@@ -252,8 +248,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <details><summary>もし結果に納得できなかったら？</summary><p>もう一度受けてください。数分かかります。</p></details>
         <details><summary>なぜ「どうでもいい」なのですか？</summary><p>どうでもいいからです。</p></details>
         <details><summary>いい結果が出たら、友だちにシェアしてもいいですか？</summary><p>はい。友だちの数分も失われます。</p></details>
-        <details><summary>Do demo E Lab とは何ですか？</summary><p>現在調査検討中です。</p></details>
-        <details><summary>監修者はいますか？</summary><p>いません。</p></details>
+        <details><summary>ところで、監修者はいますか？</summary><p>いません。</p></details>
+        <details><summary>このテスト、答えるのに何分かかりますか？</summary><p>数分です。数分だとしても失った時間はもとに戻りませんよ。</p></details>
+        <details><summary>タイプを変えたいときは？</summary><p>体を洗う順番を変えてください。</p></details>
+        <details><summary>エレベーターの中で受けてもいいですか？</summary><p>はい。「閉」ボタンは押してください。</p></details>
+        <details><summary>よく聞くんですが、Do demo E Lab って何ですか？</summary><p>現在調査検討中です。</p></details>
+        <details><summary>うちの猫も受けられますか？</summary><p>どちらでもないです。</p></details>
       </div>
       <button class="cta" data-start style="justify-self:center">テストを受ける</button>
     </div>
@@ -321,22 +321,22 @@ const GAPS = [
 
 // [軸, 文, 向き] 向き=1 なら「そう思う」が軸の a
 const QS = [
-  [2, "すぐに「閉」ボタンを押す。", 1],
-  [3, "べつに、黄身は最後まで残さなくていい。", 1],
-  [0, "てっぺんから順に体を洗う。", 1],
-  [2, "ドアは、閉まるのを待つ。", -1],
-  [1, "ちぎったトイレットペーパーは、くしゃっと丸める。", -1],
-  [3, "ラーメンの卵は、最初に割る。", 1],
-  [0, "できれば、足から洗いたい。", -1],
-  [3, "もったいないので、黄身は最後までとっておく。", -1],
-  [1, "なにも考えずに、トイレットペーパーを丸めている。", -1],
-  [2, "いつも、エレベーターではまず「閉」ボタンを探す。", 1],
+  [0, "お風呂では、上半身から洗う。", 1],
   [1, "トイレットペーパーは、たたんで使う。", 1],
-  [0, "このごろは、上半身から洗っている。", 1],
-  [3, "たいてい、目玉焼きの黄身は最初に割る。", 1],
-  [2, "エレベーターのドアは、自然に閉まるまで待つ。", -1],
-  [1, "よく、レシートを折りたたんで財布に入れる。", 1],
-  [0, "うちでは、シャワーを足元からかける。", -1],
+  [2, "エレベーターに乗ったら、まず「閉」ボタンを押す。", 1],
+  [3, "目玉焼きの黄身は、最初に割る。", 1],
+  [0, "体を洗うときは、足から始める。", -1],
+  [1, "トイレットペーパーは、くしゃっと丸めて使う。", -1],
+  [2, "電子レンジは鳴るまで待つ。", -1],
+  [3, "目玉焼きの黄身は、最後までとっておく。", -1],
+  [0, "シャワーは頭からかける。", 1],
+  [1, "レシートは、たたんで財布に入れる。", 1],
+  [2, "横断歩道の押しボタンは、押さずに待つ。", -1],
+  [3, "ショートケーキのいちごは、最初に食べる。", 1],
+  [0, "背中より先に、足を洗う。", -1],
+  [1, "ハンカチは、たたんでポケットに入れる。", 1],
+  [2, "自動ドアが開くのを、待ちきれない。", 1],
+  [3, "ラーメンの卵は、最初に割る。", 1],
 ];
 const SCALE = [3, 2, 1, 0, -1, -2, -3];
 const CSIZE = [44, 37, 30, 24, 30, 37, 44];
@@ -631,7 +631,7 @@ function render({ code, pct }) {
       </dl>
     </div>
 
-    <div class="in"><div class="callout hint">納得いかない人は、くだらない質問だと思わずに、全16問をもう一度見てください。直感ではなく、頭を使いましょう。</div></div>
+    <div class="in"><div class="callout hint">納得いかない人は、くだらない質問だと思わずに、「よくある質問」を全16個、直感ではなく頭を使って見直そう。</div></div>
     ${actionsHTML()}`;
 
   unlock();
