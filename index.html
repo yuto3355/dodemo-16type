@@ -137,6 +137,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .ends span:first-child { color: var(--agree); } .ends span:last-child { color: var(--disagree); }
 .q-actions { display: grid; gap: 12px; justify-items: center; padding-block: 32px 64px; }
 .note { font-size: 13px; color: var(--muted); }
+.err { width: 100%; max-width: 460px; border: 2px solid #d64545; background: #fdecec; color: #8f1f1f; border-radius: 10px; padding: 12px 16px; font-weight: 700; font-size: 14px; display: grid; gap: 2px; }
+.err b { font-size: 15px; }
 .textbtn { background: none; border: 0; color: var(--muted); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; }
 
 /* 結果 */
@@ -248,11 +250,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <details><summary>もし結果に納得できなかったら？</summary><p>もう一度受けてください。数分かかります。</p></details>
         <details><summary>なぜ「どうでもいい」なのですか？</summary><p>どうでもいいからです。</p></details>
         <details><summary>いい結果が出たら、友だちにシェアしてもいいですか？</summary><p>はい。友だちの数分も失われます。</p></details>
-        <details><summary>ところで、監修者はいますか？</summary><p>いません。</p></details>
-        <details><summary>このテスト、答えるのに何分かかりますか？</summary><p>数分です。数分だとしても失った時間はもとに戻りませんよ。</p></details>
+        <details><summary>トイレで答えても良いですか？</summary><p>はい。紙はたたんでも丸めてもかまいません。</p></details>
+        <details><summary>このDo demo E Labってなんですか？</summary><p>現在調査検討中です。</p></details>
         <details><summary>タイプを変えたいときは？</summary><p>体を洗う順番を変えてください。</p></details>
         <details><summary>エレベーターの中で受けてもいいですか？</summary><p>はい。「閉」ボタンは押してください。</p></details>
-        <details><summary>よく聞くんですが、Do demo E Lab って何ですか？</summary><p>現在調査検討中です。</p></details>
+        <details><summary>よくある質問多くないですか？</summary><p>ちょうど16個です。</p></details>
         <details><summary>うちの猫も受けられますか？</summary><p>どちらでもないです。</p></details>
       </div>
       <button class="cta" data-start style="justify-self:center">テストを受ける</button>
@@ -282,6 +284,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <div id="questions"></div>
     <div class="q-actions">
       <button type="submit" class="cta" id="go">結果を見る</button>
+      <div class="err" id="err" role="alert" hidden><b>エラー(E-0000)</b><span>回答がすべて「どちらでもない」になっています。ありのままの自分で、正直に回答してください。</span></div>
       <span class="note" id="left"></span>
       <button type="button" class="textbtn" id="rand">適当に全部埋める</button>
     </div>
@@ -724,6 +727,12 @@ $("#quiz").addEventListener("submit", (e) => {
     document.getElementById("qf" + first).scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
+  if (!unlocked && ans.every((v) => v === 0)) {
+    $("#err").hidden = false;
+    $("#err").scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  $("#err").hidden = true;
   render(judge(ans));
 });
 $("#rand").addEventListener("click", () => {
