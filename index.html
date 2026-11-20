@@ -156,7 +156,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .quote { border-left: 4px solid var(--c3); padding: 4px 0 4px 16px; display: grid; gap: 6px; }
 .quote p { font-size: 19px; font-weight: 900; line-height: 1.6; }
 .quote cite { font-style: normal; font-size: 13px; color: var(--muted); }
-.hint { margin-top: 28px; }
+.hint { margin-top: 28px; text-align: center; }
 .callout { background: var(--c3s); border-left: 4px solid var(--c3); padding: 14px 18px; font-weight: 700; }
 .bars { display: grid; gap: 14px; }
 .bar-row { display: grid; gap: 4px; font-size: 13px; font-weight: 700; }
@@ -646,7 +646,7 @@ function render({ code, pct }) {
       </dl>
     </div>
 
-    <div class="in"><div class="callout hint">納得いかない人は、くだらない質問だと思わずに、全16個、直感ではなく頭を使おう。</div></div>
+    <div class="in"><p class="note hint">納得いかない人へ。大事なことは、たいてい最初に書いてあります。</p></div>
     ${actionsHTML()}`;
 
   unlock();
