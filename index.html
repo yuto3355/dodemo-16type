@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="体を洗う順番、トイレットペーパー、エレベーターの「閉」ボタン、目玉焼きの黄身。性格とは関係ない4つの軸で、あなたを16タイプに分けます。">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>どうでもいい16タイプ診断</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800;900&family=Noto+Sans+JP:wght@500;700;900&family=Zen+Old+Mincho:wght@700&display=swap">
+<style>
+/* layout: 性格診断サイトの型を混ぜたガワ。トップ(利用者の声の見出し→キャラ→実績の数字→4軸→16タイプの4グループ→FAQ)、設問、結果(タイプ解説の読み物)の3画面 */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --soft: #f6f4f8;
+  --accent: #e8679b;
+  --accent-deep: #c94a7f;
+  --agree: #e8679b;
+  --disagree: #6aa9c9;
+  --ink: #2f2c38;
+  --muted: #6c6877;
+  --line: #e8e5ee;
+  --body: #fff4ea;
+  --paper: #ffffff;
+  --c0: #ff8fab; --c0s: #ffe9ef;
+  --c1: #f2ad22; --c1s: #fff4d9;
+  --c2: #4fbf9c; --c2s: #e1f6ef;
+  --c3: #9c84ea; --c3s: #efebfd;
+  --f-display: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  --f-body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --f-logo: "Zen Old Mincho", "Hiragino Mincho ProN", serif;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-weight: 500; font-size: 15.5px; line-height: 1.9; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { text-wrap: balance; font-weight: 900; line-height: 1.4; }
+.in { max-width: 680px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.sec { padding-block: 48px; }
+.sec.soft { background: var(--soft); }
+.sec .in { display: grid; gap: 20px; }
+.sec h2 { font-size: 24px; }
+.lead2 { color: var(--muted); }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent-deep); outline-offset: 3px; }
+
+/* ヘッダー */
+.hd { border-bottom: 1px solid var(--line); background: var(--bg); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.hd .in { display: flex; align-items: center; justify-content: space-between; padding-block: 10px; gap: 12px; position: relative; }
+.logo { display: flex; align-items: center; gap: 8px; font-family: var(--f-logo); font-size: 20px; color: var(--ink); text-decoration: none; }
+.logo i { width: 22px; height: 22px; border-radius: 50%; background: conic-gradient(var(--c0) 0 25%, var(--c1) 0 50%, var(--c2) 0 75%, var(--c3) 0); }
+.nav { display: flex; gap: 4px; }
+.nav a { padding: 6px 12px; border-radius: 999px; color: var(--ink); text-decoration: none; font-size: 13px; font-weight: 700; }
+.nav a:hover { background: var(--soft); }
+.nav a.go { background: var(--accent); color: #fff; }
+@media (max-width: 460px) { .nav a:not(.go) { display: none; } }
+
+/* ヒーロー */
+.hero { background: linear-gradient(var(--c0s), var(--bg)); padding-block: 36px 20px; }
+.hero .in { display: grid; gap: 16px; }
+.hero h1 { font-size: clamp(25px, 6.6vw, 36px); }
+.hero p { font-size: 16.5px; }
+.cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 420px; padding: 15px 24px; border-radius: 999px; border: 0; cursor: pointer;
+  background: var(--accent); color: #fff; font: inherit; font-weight: 900; font-size: 17px; letter-spacing: .08em; }
+.cta::after { content: "→"; font-weight: 700; }
+.cta:hover { background: var(--accent-deep); }
+.crowd { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
+.crowd svg { width: 84px; height: 84px; margin: -6px -5px; }
+.crowd svg:nth-child(3n+1) { width: 100px; height: 100px; }
+.crowd svg:nth-child(odd) { animation: sway 2.6s ease-in-out infinite; }
+.crowd svg:nth-child(even) { animation: sway 2.6s ease-in-out infinite reverse; }
+@keyframes sway { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+
+/* 実績の数字 */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.stat { border-radius: 10px; padding: 18px 12px 16px; text-align: center; border-top: 5px solid var(--sc); background: var(--ss); }
+.stat b { display: block; font-size: 30px; font-weight: 900; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; }
+
+/* 4軸 */
+.axes { display: grid; background: var(--bg); border-radius: 10px; box-shadow: 0 2px 10px rgba(47, 44, 56, .08); overflow: hidden; }
+.axis { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; padding: 14px 16px; border-left: 5px solid var(--ac); }
+.axis + .axis { border-top: 1px solid var(--line); }
+.axis .lt { font-family: var(--f-display); font-size: 20px; color: var(--ac); width: 2.6em; text-align: center; letter-spacing: .05em; }
+.axis strong { display: block; }
+.axis span { font-size: 13px; color: var(--muted); }
+
+/* 16タイプ */
+.groups { display: grid; gap: 16px; }
+.group { border-radius: 14px; padding: 16px; background: var(--gs); display: grid; gap: 10px; }
+.group h3 { font-size: 17px; display: flex; gap: 10px; align-items: baseline; }
+.group h3 small { font-size: 12px; color: var(--muted); font-weight: 700; }
+.gtypes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+@media (max-width: 440px) { .gtypes { grid-template-columns: repeat(2, 1fr); } }
+.tcard { display: grid; justify-items: center; text-align: center; font-size: 12px; font-weight: 700; line-height: 1.4; background: var(--bg); border-radius: 10px; padding: 8px 4px 10px; }
+.tcard svg { width: 100%; max-width: 84px; height: auto; aspect-ratio: 1; }
+.tcard .tc { font-family: var(--f-display); font-size: 11px; color: var(--muted); }
+.tcard.me { box-shadow: 0 0 0 3px var(--accent); }
+
+/* FAQ */
+.faq { display: grid; gap: 10px; }
+.faq details { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0 16px; }
+.faq summary { cursor: pointer; font-weight: 900; padding-block: 14px; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--accent); font-weight: 900; }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { padding-bottom: 14px; color: var(--muted); }
+.ft { border-top: 1px solid var(--line); padding-block: 22px; font-size: 12px; color: var(--muted); text-align: center; }
+
+/* 設問 */
+.quiz-head { background: var(--soft); padding-block: 32px 24px; }
+.quiz-head .in { display: grid; gap: 16px; justify-items: center; text-align: center; }
+.quiz-head h1 { font-size: 26px; }
+.quiz-head .sub { color: var(--muted); font-size: 13px; margin-top: -10px; }
+.howto { width: 100%; background: var(--bg); border-radius: 10px; box-shadow: 0 2px 10px rgba(47, 44, 56, .08); text-align: left; overflow: hidden; }
+.howto p { padding: 12px 16px; border-left: 5px solid var(--hc); font-size: 13.5px; }
+.howto p + p { border-top: 1px solid var(--line); }
+.progress { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 57px); background: var(--bg); padding-block: 10px; z-index: 4; border-bottom: 1px solid var(--line); }
+.progress .row { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.progress .bar { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
+.progress .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .25s; }
+.q { border: 0; margin: 0; padding: 26px 0; border-bottom: 1px solid var(--line); display: grid; gap: 12px; transition: opacity .2s; min-width: 0; }
+.q.done { opacity: .4; }
+.q .qn { font-size: 12px; color: var(--muted); font-weight: 700; }
+.q .qt { font-weight: 900; font-size: 17px; margin-top: -8px; }
+.circles { display: flex; justify-content: space-between; align-items: center; max-width: 460px; width: 100%; margin-inline: auto; }
+.circles label { cursor: pointer; display: grid; place-items: center; }
+.circles input { position: absolute; opacity: 0; pointer-events: none; }
+.circles span { display: block; border-radius: 50%; border: 2.5px solid var(--cc); transition: background .15s, transform .15s; }
+.circles label:hover span { transform: scale(1.08); }
+.circles input:checked + span { background: var(--cc); transform: scale(1.1); }
+.circles input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 2px; }
+.ends { display: flex; justify-content: space-between; max-width: 460px; width: 100%; margin-inline: auto; font-size: 13px; font-weight: 700; margin-top: -4px; }
+.ends span:first-child { color: var(--agree); } .ends span:last-child { color: var(--disagree); }
+.q-actions { display: grid; gap: 12px; justify-items: center; padding-block: 32px 64px; }
+.note { font-size: 13px; color: var(--muted); }
+.textbtn { background: none; border: 0; color: var(--muted); font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; }
+
+/* 結果 */
+.res-hero { background: linear-gradient(var(--c3s), var(--bg)); padding-block: 30px 10px; }
+.res-hero .in { display: grid; gap: 4px; }
+.res-hero h1 { font-size: clamp(32px, 9vw, 44px); }
+.res-hero .typeline { font-size: 22px; font-weight: 900; color: var(--accent-deep); }
+.res-char { width: 220px; max-width: 70%; aspect-ratio: 1; justify-self: center; margin-block: 6px; }
+.res-char svg { width: 100%; height: 100%; }
+.letters { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+.letters div { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+.letters b { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-display); font-size: 14px; color: var(--lc); background: var(--ls); flex: none; }
+.article { display: grid; gap: 18px; padding-block: 28px 8px; }
+.article h2 { font-size: 26px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.quote { border-left: 4px solid var(--c3); padding: 4px 0 4px 16px; display: grid; gap: 6px; }
+.quote p { font-size: 19px; font-weight: 900; line-height: 1.6; }
+.quote cite { font-style: normal; font-size: 13px; color: var(--muted); }
+.callout { background: var(--c3s); border-left: 4px solid var(--c3); padding: 14px 18px; font-weight: 700; }
+.bars { display: grid; gap: 14px; }
+.bar-row { display: grid; gap: 4px; font-size: 13px; font-weight: 700; }
+.bar-labels { display: flex; justify-content: space-between; gap: 8px; }
+.bar2 { height: 12px; background: var(--ls); border-radius: 999px; overflow: hidden; }
+.bar2 i { display: block; height: 100%; background: var(--lc); border-radius: 999px; }
+.sw { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.sw div { border-radius: 10px; padding: 14px 16px; }
+.sw div:first-child { background: var(--c2s); } .sw div:last-child { background: var(--c0s); }
+.sw h3 { font-size: 15px; margin-bottom: 4px; }
+.sw ul { margin: 0; padding-left: 1.2em; }
+.match { display: flex; gap: 14px; align-items: center; background: var(--soft); border-radius: 10px; padding: 12px 16px; }
+.match svg { width: 76px; height: 76px; flex: none; }
+.match div { min-width: 0; }
+.match + .match { margin-top: -6px; }
+.facts { display: grid; grid-template-columns: 10em 1fr; margin: 0; }
+.facts dt, .facts dd { padding-block: 10px; border-bottom: 1px solid var(--line); }
+.facts dt { color: var(--muted); font-size: 13.5px; font-weight: 700; }
+.facts dd { margin: 0; min-width: 0; font-weight: 700; }
+@media (max-width: 480px) { .facts { grid-template-columns: 1fr; } .facts dt { border-bottom: 0; padding-bottom: 0; } }
+.num { font-variant-numeric: tabular-nums; }
+.res-actions { display: grid; gap: 12px; justify-items: center; padding-block: 28px 56px; }
+.share-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.xbtn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 900; text-decoration: none; }
+.card-preview { display: grid; gap: 6px; justify-items: center; }
+.card-preview img { width: 100%; max-width: 360px; border-radius: 12px; box-shadow: 0 2px 12px rgba(47, 44, 56, .15); }
+.ghost { display: inline-block; padding: 10px 26px; border-radius: 999px; background: var(--bg); color: var(--accent-deep); border: 2px solid var(--accent); font: inherit; font-weight: 900; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="hd">
+  <div class="in">
+    <a class="logo" href="#top" id="logo"><i aria-hidden="true"></i>Do demo E Lab</a>
+    <nav class="nav">
+      <a href="#top" data-go="types">タイプ一覧</a>
+      <a href="#top" data-go="faq">FAQ</a>
+      <a href="#top" data-go="quiz" class="go">テスト</a>
+    </nav>
+  </div>
+</header>
+
+<!-- トップ -->
+<main id="view-top">
+  <section class="hero">
+    <div class="in">
+      <h1>「やっと自分の洗い方を<br>理解してもらえました」</h1>
+      <p>たった3分で、自分が体のどこから洗うのか、トイレットペーパーをたたむのか丸めるのかについて、不思議なくらい正確な説明を手に入れられます。</p>
+      <button class="cta" data-start>テストを受ける</button>
+      <div class="crowd" id="crowd" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="in">
+      <div class="stats">
+        <div class="stat" style="--sc:var(--c0);--ss:var(--c0s)"><b>不明</b><span>本日の診断回数</span></div>
+        <div class="stat" style="--sc:var(--c1);--ss:var(--c1s)"><b>0ロール</b><span>調べたトイレットペーパー</span></div>
+        <div class="stat" style="--sc:var(--c2);--ss:var(--c2s)"><b>不明</b><span>累計診断回数</span></div>
+        <div class="stat" style="--sc:var(--c3);--ss:var(--c3s)"><b>100%</b><span>正確性の評価</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec soft">
+    <div class="in">
+      <h2>4つの軸</h2>
+      <p class="lead2">あなたの日常の動作を4つの軸で測定し、16タイプのどれかに分類します。</p>
+      <div class="axes" id="axes"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="sec-types">
+    <div class="in">
+      <h2>16の性格タイプ</h2>
+      <p class="lead2">16タイプは、体の洗い方とトイレットペーパーの組み合わせで4つのグループに分かれます。</p>
+      <div class="groups" id="groups"></div>
+    </div>
+  </section>
+
+  <section class="sec soft" id="sec-faq">
+    <div class="in">
+      <h2>よくある質問</h2>
+      <div class="faq">
+        <details><summary>テストは無料ですか？</summary><p>はい。無料で受けられます。会員登録も不要です。</p></details>
+        <details><summary>答えるのに何分かかりますか？</summary><p>数分です。数分だとしても失った時間はもとに戻りませんよ。</p></details>
+        <details><summary>結果から何がわかりますか？</summary><p>あなたが体のどこから洗うか、トイレットペーパーをたたむか丸めるか、エレベーターでの過ごし方、目玉焼きの黄身をいつ割るかがわかります。</p></details>
+        <details><summary>何回でも受けられますか？</summary><p>はい。体を洗う順番が変わると、結果が変わることもあります。</p></details>
+        <details><summary>結果は当たりますか？</summary><p>回答どおりの結果が表示されます。</p></details>
+        <details><summary>監修者はいますか？</summary><p>いません。</p></details>
+        <details><summary>受けると何かいいことがありますか？</summary><p>ありません。</p></details>
+        <details><summary>途中でやめてもいいですか？</summary><p>はい。おすすめです。</p></details>
+        <details><summary>結果を友だちにシェアしてもいいですか？</summary><p>はい。友だちの数分も失われます。</p></details>
+        <details><summary>なぜ16タイプなのですか？</summary><p>4つの軸が2つずつに分かれるからです。</p></details>
+        <details><summary>回答したデータはどのように使われますか？</summary><p>使われません。</p></details>
+        <details><summary>科学的な根拠はありますか？</summary><p>ありません。</p></details>
+        <details><summary>16タイプのうち、どれが一番いいですか？</summary><p>どれも同じくらいです。</p></details>
+        <details><summary>結果に納得できません。</summary><p>もう一度受けてください。数分かかります。</p></details>
+        <details><summary>お風呂で受けてもいいですか？</summary><p>スマホが濡れるのでおすすめしません。</p></details>
+        <details><summary>家族全員で受けてもいいですか？</summary><p>はい。家族全員の数分が失われます。</p></details>
+        <details><summary>履歴書に書いてもいいですか？</summary><p>書けますが、おすすめしません。</p></details>
+        <details><summary>Do demo E Lab とは何ですか？</summary><p>現在調査検討中です。</p></details>
+        <details><summary>問い合わせ先はありますか？</summary><p>ありません。</p></details>
+      </div>
+      <button class="cta" data-start style="justify-self:center">テストを受ける</button>
+    </div>
+  </section>
+  <footer class="ft">@ Do demo E Lab</footer>
+</main>
+
+<!-- 設問 -->
+<main id="view-quiz" hidden>
+  <section class="quiz-head">
+    <div class="in">
+      <h1>無料どうでもいい診断テスト</h1>
+      <p class="sub">Do demo E Lab 認定(自社)</p>
+      <div class="howto">
+        <p style="--hc:var(--c0)">自分のタイプを突き止めるために、ありのままの自分で正直に回答してください。</p>
+        <p style="--hc:var(--c2)">体を洗う順番が、人生の数多くの場面にどのような影響を及ぼしているか学びましょう。</p>
+        <p style="--hc:var(--c3)">迷ったら、実際にお風呂に入ってみてください。</p>
+      </div>
+    </div>
+  </section>
+  <div class="progress"><div class="in" style="display:grid;gap:6px">
+    <div class="row"><span>回答済み</span><span class="num" id="remain">0 / 12</span></div>
+    <div class="bar"><i id="prog"></i></div>
+  </div></div>
+  <form class="in" id="quiz">
+    <div id="questions"></div>
+    <div class="q-actions">
+      <button type="submit" class="cta" id="go">結果を見る</button>
+      <span class="note" id="left"></span>
+      <button type="button" class="textbtn" id="rand">適当に全部埋める</button>
+    </div>
+  </form>
+</main>
+
+<!-- 結果 -->
+<main id="view-result" hidden></main>
+
+<script>
+// サイトを開いた時刻(失った時間を測る)
+const OPENED_AT = Date.now();
+function lostTime() {
+  const sec = Math.max(1, Math.round((Date.now() - OPENED_AT) / 1000));
+  const m = Math.floor(sec / 60), r = sec % 60;
+  return m ? `${m}分${r}秒` : `${r}秒`;
+}
+
+const AXES = [
+  { a: "U", b: "S", la: "上半身から", lb: "足から", ta: "上洗い型", tb: "下洗い型", title: "体を洗う順番",
+    sa: "泡が上から流れて効率がいい", sb: "足が先にきれいになる", wa: "足を洗うころには少し疲れている", wb: "上から泡が流れてくる" },
+  { a: "T", b: "R", la: "たたむ", lb: "丸める", ta: "たたみ型", tb: "まるめ型", title: "トイレットペーパー",
+    sa: "見た目が整う", sb: "すぐ終わる", wa: "たたむのに少し時間がかかる", wb: "使う量が読めない" },
+  { a: "O", b: "M", la: "押す", lb: "待つ", ta: "押す型", tb: "待つ型", title: "エレベーターの「閉」ボタン",
+    sa: "約4秒早く移動できる", sb: "約4秒長く休める", wa: "その4秒を特に使っていない", wb: "その4秒を特に使っていない" },
+  { a: "W", b: "N", la: "最初に割る", lb: "最後に残す", ta: "割る型", tb: "残す型", title: "目玉焼きの黄身",
+    sa: "黄身がご飯に行き渡る", sb: "最後に楽しみが残る", wa: "皿が黄色くなる", wb: "黄身が冷める" },
+];
+const AXC = ["c0", "c1", "c2", "c3"];
+// 二面性の文: [a側の見た目と本心, b側の見た目と本心]
+const GAPS = [
+  ["上半身から洗っているように見えても、心の奥では足から洗いたいと思っています。", "足から洗っているように見えても、心の奥では上半身から洗いたいと思っています。"],
+  ["トイレットペーパーをきちんとたたんでいるように見えても、心の奥では丸めたいと思っています。", "トイレットペーパーをくしゃっと丸めているように見えても、心の奥ではたたみたいと思っています。"],
+  ["すぐに「閉」ボタンを押しているように見えても、心の奥では待ちたいと思っています。", "静かにドアが閉まるのを待っているように見えても、心の奥では押したいと思っています。"],
+  ["黄身を最初に割っているように見えても、心の奥では最後まで残したいと思っています。", "黄身を最後まで残しているように見えても、心の奥では最初に割りたいと思っています。"],
+];
+
+// [軸, 文, 向き] 向き=1 なら「そう思う」が軸の a
+const QS = [
+  [0, "お風呂では、上半身から洗う。", 1],
+  [1, "トイレットペーパーは、たたんで使う。", 1],
+  [2, "エレベーターに乗ったら、まず「閉」ボタンを押す。", 1],
+  [3, "目玉焼きの黄身は、最初に割る。", 1],
+  [0, "体を洗うときは、足から始める。", -1],
+  [1, "トイレットペーパーは、くしゃっと丸めて使う。", -1],
+  [2, "電子レンジは鳴るまで待つ。", -1],
+  [3, "目玉焼きの黄身は、最後までとっておく。", -1],
+  [0, "シャワーは頭からかける。", 1],
+  [1, "レシートは、たたんで財布に入れる。", 1],
+  [2, "横断歩道の押しボタンは、押さずに待つ。", -1],
+  [3, "ショートケーキのいちごは、最初に食べる。", 1],
+];
+const SCALE = [3, 2, 1, 0, -1, -2, -3];
+const CSIZE = [44, 37, 30, 24, 30, 37, 44];
+
+const NAMES = {
+  UTOW: ["上から畳む突撃隊長", "上から洗い、たたんで、押して、割る。"],
+  UTON: ["黄身を守るせっかち", "黄身は最後まで残すが、ドアはすぐ閉める。"],
+  UTMW: ["待てる折り紙職人", "紙はたたむ。ドアは待つ。黄身は割る。"],
+  UTMN: ["上品な保存家", "上から洗い、黄身を残し、静かに待つ。"],
+  UROW: ["上から来るつむじ風", "丸めて、押して、割る。"],
+  URON: ["頭から来る短距離走者", "急ぐが、黄身は残す。"],
+  URMW: ["丸める哲学者", "考えているように見える。"],
+  URMN: ["上からの自然体", "上から洗う。以上。"],
+  STOW: ["足元の司令塔", "下から洗い、すべてを先に済ませる。"],
+  STON: ["慎重なせっかち", "たたむのに、閉ボタンは即押し。"],
+  STMW: ["足元の書記官", "たたんで、待って、割る。"],
+  STMN: ["下からの保存家", "黄身だけはしっかり残している。"],
+  SROW: ["下からの突撃隊長", "丸めて、押して、割って、行く。"],
+  SRON: ["押したがりの丸め屋", "ボタンは押す。黄身は押さない。"],
+  SRMW: ["丸めの待機員", "丸めて、静かに待つ。"],
+  SRMN: ["自然体の下から派", "特に何もしない。下から洗う。"],
+};
+const GROUPS = [
+  ["UT", "上たたみ派", "上半身から洗い、紙はたたむ", "c0"],
+  ["UR", "上まるめ派", "上半身から洗い、紙は丸める", "c1"],
+  ["ST", "下たたみ派", "足から洗い、紙はたたむ", "c2"],
+  ["SR", "下まるめ派", "足から洗い、紙は丸める", "c3"],
+];
+const JOBS = { U: "シャワーを上からかける係", S: "足湯の番人", T: "トイレットペーパー折りたたみ屋さん", R: "トイレットペーパー丸め屋さん",
+  O: "「閉」ボタン押し屋さん", M: "エレベーター待ち屋さん", W: "黄身割り職人", N: "黄身の見張り番" };
+
+// キャラ: 4文字で見た目が決まる。泡=洗う場所、手=トイレットペーパー、目=閉ボタン、頭=目玉焼き
+function charSVG(code) {
+  const [w, p, b, e] = code.split("");
+  const st = 'stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"';
+  const bub = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="var(--paper)" stroke="var(--c2)" stroke-width="2"/>`;
+  const bubbles = w === "U" ? bub(22, 42, 7) + bub(12, 56, 5) + bub(30, 27, 4.5) : bub(18, 104, 6.5) + bub(8, 92, 4) + bub(104, 112, 5);
+  const foot = (x) => `<ellipse cx="${x}" cy="110" rx="12" ry="7.5" fill="var(--body)" ${st}/>`;
+  const paper = p === "T"
+    ? `<rect x="94" y="56" width="22" height="18" rx="2" fill="var(--paper)" ${st}/><path d="M98 62 h14 M98 67 h14" stroke="var(--line)" stroke-width="2"/>`
+    : `<circle cx="106" cy="64" r="11" fill="var(--paper)" ${st}/><path d="M99 62 l5 4 l4 -6 l4 7" fill="none" ${st}/>`;
+  const egg = e === "N"
+    ? `<path d="M38 37 q-2 -10 12 -10 q6 -6 16 -1 q14 -2 14 10 q-2 6 -20 6 q-20 0 -22 -5z" fill="var(--paper)" ${st}/><circle cx="60" cy="31" r="6.5" fill="var(--c1)" ${st}/>`
+    : `<path d="M38 37 q-2 -10 12 -10 q6 -6 16 -1 q14 -2 14 10 q-2 6 -20 6 q-20 0 -22 -5z" fill="var(--paper)" ${st}/><path d="M53 32 q7 -6 14 0 q-3 3 -4 9 q-1 7 -4 7 q-3 0 -2 -7 q0 -5 -4 -9z" fill="var(--c1)" ${st}/>`;
+  const eyes = b === "O"
+    ? `<circle cx="47" cy="66" r="4.5" fill="var(--ink)"/><circle cx="73" cy="66" r="4.5" fill="var(--ink)"/><circle cx="48.5" cy="64.5" r="1.4" fill="var(--paper)"/><circle cx="74.5" cy="64.5" r="1.4" fill="var(--paper)"/><path d="M92 40 q-5 7 0 10 q5 -3 0 -10z" fill="var(--c3)" ${st}/>`
+    : `<path d="M42 66 q5 5 10 0 M68 66 q5 5 10 0" fill="none" ${st}/><text x="88" y="38" font-size="13" font-weight="800" fill="var(--c3)" font-family="var(--f-display)">zz</text>`;
+  return `<svg viewBox="0 0 124 124" role="img" aria-label="${code}のキャラ">
+    ${foot(44)}${foot(76)}
+    <ellipse cx="60" cy="72" rx="38" ry="35" fill="var(--body)" ${st}/>
+    <ellipse cx="38" cy="78" rx="6" ry="3.8" fill="var(--c0)" opacity=".55"/><ellipse cx="82" cy="78" rx="6" ry="3.8" fill="var(--c0)" opacity=".55"/>
+    ${eyes}
+    <path d="M55 79 q5 5 10 0" fill="none" ${st}/>
+    ${paper}
+    <ellipse cx="96" cy="80" rx="8" ry="6.5" fill="var(--body)" ${st}/>
+    ${egg}
+    ${bubbles}
+  </svg>`;
+}
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// 画面の切り替え
+const VIEWS = ["top", "quiz", "result"];
+function show(v, anchor) {
+  VIEWS.forEach((x) => { document.getElementById("view-" + x).hidden = x !== v; });
+  if (anchor) document.getElementById(anchor).scrollIntoView({ block: "start" });
+  else window.scrollTo(0, 0);
+}
+
+// トップ
+$("#crowd").innerHTML = ["URON", "STMW", "UTOW", "SRMN", "URMN", "SROW", "UTMN", "STON"].map(charSVG).join("");
+$("#axes").innerHTML = AXES.map((x, i) =>
+  `<div class="axis" style="--ac:var(--${AXC[i]})"><span class="lt">${x.a}/${x.b}</span><div><strong>${esc(x.title)}</strong><span>${esc(x.la)}(${x.a})か、${esc(x.lb)}(${x.b})か</span></div></div>`).join("");
+$("#groups").innerHTML = GROUPS.map(([pre, gname, gdesc, c]) => `
+  <div class="group" style="--gs:var(--${c}s)">
+    <h3>${esc(gname)}<small>${esc(gdesc)}</small></h3>
+    <div class="gtypes">
+      ${Object.entries(NAMES).filter(([k]) => k.startsWith(pre)).map(([k, [n]]) =>
+        `<div class="tcard" data-code="${k}">${charSVG(k)}<span>${esc(n)}</span><span class="tc">${k}</span></div>`).join("")}
+    </div>
+  </div>`).join("");
+
+// 設問
+$("#questions").innerHTML = QS.map(([ax, text], i) => `
+  <fieldset class="q" id="qf${i}" aria-labelledby="qt${i}">
+    <p class="qn">質問 ${i + 1}/${QS.length}</p>
+    <p class="qt" id="qt${i}">${esc(text)}</p>
+    <div class="circles">
+      ${SCALE.map((v, k) => `<label><input type="radio" id="q${i}_${k}" name="q${i}" value="${v}" aria-label="${["とてもそう思う", "そう思う", "ややそう思う", "どちらでもない", "ややそう思わない", "そう思わない", "まったくそう思わない"][k]}"><span style="width:${CSIZE[k]}px;height:${CSIZE[k]}px;--cc:${v > 0 ? "var(--agree)" : v < 0 ? "var(--disagree)" : "var(--line)"}"></span></label>`).join("")}
+    </div>
+    <div class="ends"><span>そう思う</span><span>そう思わない</span></div>
+  </fieldset>`).join("");
+
+function answers() {
+  return QS.map((_, i) => {
+    const el = document.querySelector(`input[name="q${i}"]:checked`);
+    return el ? Number(el.value) : null;
+  });
+}
+function updateLeft() {
+  const ans = answers();
+  const done = ans.filter((v) => v !== null).length;
+  $("#remain").textContent = `${done} / ${QS.length}`;
+  $("#prog").style.width = (done / QS.length * 100) + "%";
+  ans.forEach((v, i) => document.getElementById("qf" + i).classList.toggle("done", v !== null));
+  $("#left").textContent = "";
+}
+$("#quiz").addEventListener("change", (e) => {
+  updateLeft();
+  const i = Number(e.target.name.slice(1));
+  const next = document.getElementById("qf" + (i + 1));
+  if (next && answers()[i + 1] === null) next.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+function judge(ans) {
+  const sums = [0, 0, 0, 0];
+  QS.forEach(([ax, , dir], i) => { sums[ax] += (ans[i] ?? 0) * dir; });
+  const pct = sums.map((s) => Math.round(50 + (s / 9) * 50));
+  const code = pct.map((p, i) => (p >= 50 ? AXES[i].a : AXES[i].b)).join("");
+  return { code, pct };
+}
+
+// 結果
+function render({ code, pct }) {
+  const [name, tag] = NAMES[code];
+  const sides = code.split("").map((c, i) => (c === AXES[i].a ? "a" : "b"));
+  const pick = (i, a, b) => (sides[i] === "a" ? a : b);
+  const part = pick(0, "上半身", "足元");
+  const paperWay = pick(1, "きれいにたたんだトイレットペーパー", "くしゃっと丸めたトイレットペーパー");
+  const btnWay = pick(2, "エレベーターの「閉」ボタンを押したい", "エレベーターのドアが閉まるのを待ちたい");
+  const eggWay = pick(3, "目玉焼きの黄身を最初に割る", "目玉焼きの黄身を最後まで残す");
+  const verbs = [
+    pick(0, "体を上半身から洗い", "体を足から洗い"),
+    pick(1, "トイレットペーパーをたたみ", "トイレットペーパーを丸め"),
+    pick(2, "エレベーターでは「閉」ボタンを押し", "エレベーターではドアが閉まるのを待ち"),
+    eggWay,
+  ];
+  const opposite = code.split("").map((c, i) => (c === AXES[i].a ? AXES[i].b : AXES[i].a)).join("");
+  const strengths = sides.map((s, i) => AXES[i][s === "a" ? "sa" : "sb"]);
+  const weaknesses = sides.map((s, i) => AXES[i][s === "a" ? "wa" : "wb"]);
+  const lost = lostTime();
+  const gi = [...code].reduce((n, c) => n + c.charCodeAt(0), 0) % 4;
+  const job = JOBS[code[Math.floor(Math.random() * 4)]];
+
+  $("#view-result").innerHTML = `
+    <section class="res-hero"><div class="in">
+      <h1>${esc(name)}</h1>
+      <p class="typeline">${code}型の性格</p>
+      <div class="res-char">${charSVG(code)}</div>
+      <div class="letters">
+        ${code.split("").map((c, i) => `<div style="--lc:var(--${AXC[i]});--ls:var(--${AXC[i]}s)"><b>${c}</b>${esc(AXES[i][sides[i] === "a" ? "ta" : "tb"])}</div>`).join("")}
+      </div>
+    </div></section>
+
+    <div class="in article">
+      <h2>${esc(name)}</h2>
+      <div class="quote"><p>大切なのは、体を洗うのをやめないことだ。</p><cite>出典不明</cite></div>
+      <p>${code}(${esc(name)})型の人々は、自らの${part}と、${paperWay}を誇りに思っています。この性格タイプは${btnWay}という衝動に駆られ、実際、歴史上の多くの人々の中にも、この性格タイプが存在した可能性があります。${esc(tag)}</p>
+
+      <h2>${part}の世界</h2>
+      <p>${code}は、しばしばお風呂の世界に没頭するタイプで、湯船につかった瞬間から、${part}を洗うことで頭がいっぱいになるのです。</p>
+      <div class="callout">${part}から洗う${code}は、自らの${part}に無限の魅力を感じています。</div>
+      <p>外から見ると、${code}は${eggWay}人のように映るかもしれません。実際、${code}は${eggWay}人です。</p>
+      <p>あなたは${verbs.join("、")}人です。以上のことから、あなたについて分かることは特にありません。</p>
+
+      <h2>${esc(name)}のギャップ</h2>
+      <p>${GAPS[gi][sides[gi] === "a" ? 0 : 1]}そのギャップこそが、${esc(name)}の大きな魅力です。</p>
+      <p>${pick(0, "上半身から洗う人もいれば、足から洗う人もいます。", "足から洗う人もいれば、上半身から洗う人もいます。")}どちらであっても、体は洗っています。それが${esc(name)}です。</p>
+
+      <h2>4つの軸のバランス</h2>
+      <div class="bars">
+        ${AXES.map((x, i) => `
+          <div class="bar-row" style="--lc:var(--${AXC[i]});--ls:var(--${AXC[i]}s)">
+            <div class="bar-labels"><span>${x.a} ${esc(x.la)} <span class="num">${pct[i]}%</span></span><span><span class="num">${100 - pct[i]}%</span> ${esc(x.lb)} ${x.b}</span></div>
+            <div class="bar2"><i style="width:${pct[i]}%"></i></div>
+          </div>`).join("")}
+      </div>
+
+      <h2>強みと弱み</h2>
+      <div class="sw">
+        <div><h3>強み</h3><ul>${strengths.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>
+        <div><h3>弱み</h3><ul>${weaknesses.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>
+      </div>
+
+      <h2>相性</h2>
+      <div class="match">${charSVG(opposite)}<div><strong>相性の良いタイプ: ${opposite}(${esc(NAMES[opposite][0])})</strong><p>相性が良いです。好みは全部違いますが。</p></div></div>
+      <div class="match">${charSVG(code)}<div><strong>相性の悪いタイプ: ${code}(${esc(name)})</strong><p>相性が悪いです。好みは全部同じなのにね。</p></div></div>
+
+      <h2>もっと詳しく</h2>
+      <dl class="facts">
+        <dt>人口に占める割合</dt><dd><span class="num">6.25%</span></dd>
+        <dt>向いている仕事</dt><dd>${esc(job)}</dd>
+        <dt>同じタイプの有名人</dt><dd>確認されていません。</dd>
+        <dt>休日の過ごし方</dt><dd>休んでいます。</dd>
+        <dt>ストレスを感じるとき</dt><dd>エレベーターがなかなか来ないとき。</dd>
+        <dt>子どものころ</dt><dd>体を洗ってもらっていた可能性があります。</dd>
+        <dt>10年後のあなた</dt><dd>10歳年をとっています。</dd>
+        <dt>前世</dt><dd>確認中です。</dd>
+        <dt>将来の夢</dt><dd>寝ているときに見ます。</dd>
+        <dt>尊敬する人</dt><dd>トイレットペーパーを補充してくれた人。</dd>
+        <dt>運命の人に出会う場所</dt><dd>エレベーターの「閉」ボタンの前。</dd>
+        <dt>人生で大切にしているもの</dt><dd>トイレットペーパーの残り。</dd>
+        <dt>隠れた才能</dt><dd>目玉焼きをきれいに焼ける可能性があります。</dd>
+        <dt>ラッキーカラー</dt><dd>黄身の色。</dd>
+        <dt>このタイプが多い国</dt><dd>現在調査検討中。</dd>
+        <dt>診断の精度</dt><dd><span class="num">100%</span></dd>
+        <dt>この診断で失った時間</dt><dd><span class="num">${lost}</span>。</dd>
+      </dl>
+    </div>
+
+    <div class="in res-actions">
+      <button type="button" class="cta" id="snap">結果を画像で保存</button>
+      <div class="card-preview" id="preview" hidden><img id="preview-img" alt="診断結果の画像"><span class="note" id="snap-note"></span></div>
+      <div class="share-row">
+        <a class="xbtn" id="xshare" target="_blank" rel="noopener">X でシェア</a>
+        <button type="button" class="ghost" id="copy">結果の文をコピー</button>
+      </div>
+      <span class="note" id="copied"></span>
+      <button type="button" class="ghost" id="again">もう一度テストを受ける</button>
+      <button type="button" class="textbtn" id="to-top">トップへ戻る</button>
+    </div>
+    <footer class="ft">@ Do demo E Lab</footer>`;
+
+  document.querySelectorAll(".tcard").forEach((el) => el.classList.toggle("me", el.dataset.code === code));
+  const shareText = `どうでもいい16タイプ診断の結果、私は「${code} ${name}」でした。${verbs.join("、")}人です。`;
+  $("#xshare").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText + " #どうでもいい16タイプ診断");
+  $("#snap").onclick = async () => {
+    $("#snap").disabled = true;
+    try {
+      const blob = await makeCard(code, name, tag, pct);
+      $("#preview-img").src = URL.createObjectURL(blob);
+      $("#preview").hidden = false;
+      const dl = window.claude?.use ? await claude.use("downloads") : null;
+      if (!dl) {
+        const a = document.createElement("a");
+        a.href = $("#preview-img").src; a.download = `dodemo-${code}.png`;
+        document.body.appendChild(a); a.click(); a.remove();
+        $("#snap-note").textContent = "保存されない場合は、画像を長押し(右クリック)して保存してください。";
+        return;
+      }
+      try { await dl.save({ filename: `dodemo-${code}.png`, data: blob }); $("#snap-note").textContent = "保存しました"; }
+      catch (err) { $("#snap-note").textContent = err?.code === "declined" ? "" : "画像を長押し(右クリック)して保存できます。"; }
+    } finally { $("#snap").disabled = false; }
+  };
+  $("#copy").onclick = async () => {
+    try { await navigator.clipboard.writeText(shareText); $("#copied").textContent = "コピーしました"; }
+    catch { $("#copied").textContent = shareText; }
+  };
+  $("#again").onclick = () => { $("#quiz").reset(); updateLeft(); show("quiz"); };
+  $("#to-top").onclick = () => show("top");
+  show("result");
+}
+
+// 結果の画像(1080×1350)を作る
+async function makeCard(code, name, tag, pct) {
+  const css = getComputedStyle(document.documentElement);
+  const tok = (n) => css.getPropertyValue("--" + n).trim();
+  const svgStr = charSVG(code)
+    .replace('font-family="var(--f-display)"', 'font-family="sans-serif"')
+    .replace(/var\(--([\w-]+)\)/g, (m, n) => tok(n))
+    .replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" ');
+  const img = new Image();
+  const url = URL.createObjectURL(new Blob([svgStr], { type: "image/svg+xml" }));
+  await new Promise((ok, ng) => { img.onload = ok; img.onerror = ng; img.src = url; });
+  await document.fonts.ready;
+  const W = 1080, H = 1350, c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const g = c.getContext("2d");
+  const grad = g.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, tok("c3s")); grad.addColorStop(1, "#ffffff");
+  g.fillStyle = grad; g.fillRect(0, 0, W, H);
+  g.textAlign = "center"; g.textBaseline = "alphabetic";
+  const body = '"Noto Sans JP", sans-serif', disp = '"M PLUS Rounded 1c", sans-serif';
+  g.fillStyle = tok("muted"); g.font = `700 36px ${body}`;
+  g.fillText("どうでもいい16タイプ診断", W / 2, 90);
+  g.drawImage(img, (W - 480) / 2, 110, 480, 480);
+  g.font = `900 150px ${disp}`;
+  const letters = code.split(""), lw = letters.map((l) => g.measureText(l).width), total = lw.reduce((a, b) => a + b, 0) + 24 * 3;
+  let x = (W - total) / 2;
+  g.textAlign = "left";
+  letters.forEach((l, i) => { g.fillStyle = tok(AXC[i]); g.fillText(l, x, 750); x += lw[i] + 24; });
+  g.textAlign = "center";
+  g.fillStyle = tok("ink"); g.font = `900 64px ${body}`; g.fillText(name, W / 2, 850);
+  g.fillStyle = tok("muted"); g.font = `700 34px ${body}`; g.fillText(tag, W / 2, 910);
+  AXES.forEach((ax, i) => {
+    const y = 990 + i * 72, bx = 140, bw = W - 280;
+    g.font = `700 26px ${body}`; g.fillStyle = tok("ink");
+    g.textAlign = "left"; g.fillText(`${ax.a} ${ax.la} ${pct[i]}%`, bx, y);
+    g.textAlign = "right"; g.fillText(`${100 - pct[i]}% ${ax.lb} ${ax.b}`, bx + bw, y);
+    g.fillStyle = tok(AXC[i] + "s"); g.beginPath(); g.roundRect(bx, y + 12, bw, 16, 8); g.fill();
+    g.fillStyle = tok(AXC[i]); g.beginPath(); g.roundRect(bx, y + 12, Math.max(16, bw * pct[i] / 100), 16, 8); g.fill();
+  });
+  g.textAlign = "center"; g.fillStyle = tok("muted"); g.font = `700 26px ${body}`;
+  g.fillText("@ Do demo E Lab", W / 2, H - 40);
+  URL.revokeObjectURL(url);
+  return await new Promise((ok) => c.toBlob(ok, "image/png"));
+}
+
+// 操作
+document.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => show("quiz")));
+$("#quiz").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const ans = answers();
+  const first = ans.indexOf(null);
+  if (first >= 0) {
+    $("#left").textContent = `未回答が ${ans.filter((v) => v === null).length}問あります`;
+    document.getElementById("qf" + first).scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+  render(judge(ans));
+});
+$("#rand").addEventListener("click", () => {
+  QS.forEach((_, i) => { document.getElementById(`q${i}_${Math.floor(Math.random() * 7)}`).checked = true; });
+  updateLeft();
+});
+$("#logo").addEventListener("click", (e) => { e.preventDefault(); show("top"); });
+document.querySelectorAll(".nav a").forEach((a) => a.addEventListener("click", (e) => {
+  e.preventDefault();
+  const g = a.dataset.go;
+  if (g === "quiz") show("quiz"); else show("top", g === "types" ? "sec-types" : "sec-faq");
+}));
+updateLeft();
+</script>
+
+</body>
+</html>
