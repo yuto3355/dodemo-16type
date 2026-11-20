@@ -237,25 +237,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <div class="in">
       <h2>よくある質問</h2>
       <div class="faq">
-        <details><summary>テストは無料ですか？</summary><p>はい。無料で受けられます。会員登録も不要です。</p></details>
-        <details><summary>答えるのに何分かかりますか？</summary><p>数分です。数分だとしても失った時間はもとに戻りませんよ。</p></details>
-        <details><summary>結果から何がわかりますか？</summary><p>あなたが体のどこから洗うか、トイレットペーパーをたたむか丸めるか、エレベーターでの過ごし方、目玉焼きの黄身をいつ割るかがわかります。</p></details>
-        <details><summary>何回でも受けられますか？</summary><p>はい。体を洗う順番が変わると、結果が変わることもあります。</p></details>
-        <details><summary>結果は当たりますか？</summary><p>回答どおりの結果が表示されます。</p></details>
-        <details><summary>監修者はいますか？</summary><p>いません。</p></details>
-        <details><summary>受けると何かいいことがありますか？</summary><p>ありません。</p></details>
-        <details><summary>途中でやめてもいいですか？</summary><p>はい。おすすめです。</p></details>
-        <details><summary>結果を友だちにシェアしてもいいですか？</summary><p>はい。友だちの数分も失われます。</p></details>
+        <details><summary>これ、答えるのに何分かかりますか？</summary><p>数分です。数分だとしても失った時間はもとに戻りませんよ。</p></details>
+        <details><summary>ただで受けられますか？</summary><p>はい。無料です。会員登録も不要です。</p></details>
+        <details><summary>えっと、Do demo E Lab とは何ですか？</summary><p>現在調査検討中です。</p></details>
+        <details><summary>はだかで受けてもいいですか？</summary><p>はい。ただ、お風呂で受けるのはスマホが濡れるのでおすすめしません。</p></details>
+        <details><summary>すぐやめてもいいですか？</summary><p>はい。おすすめです。</p></details>
+        <details><summary>べんりな使い道はありますか？</summary><p>ありません。</p></details>
+        <details><summary>てきとうに答えても、結果は当たりますか？</summary><p>回答どおりの結果が表示されます。</p></details>
+        <details><summary>どうせなら家族全員で受けてもいいですか？</summary><p>はい。家族全員の数分が失われます。</p></details>
+        <details><summary>ちなみに、監修者はいますか？</summary><p>いません。</p></details>
+        <details><summary>らいねんの就活で、履歴書に書いてもいいですか？</summary><p>書けますが、おすすめしません。</p></details>
+        <details><summary>でも、科学的な根拠はあるんですよね？</summary><p>ありません。</p></details>
+        <details><summary>もし結果に納得できなかったら？</summary><p>もう一度受けてください。数分かかります。</p></details>
         <details><summary>なぜ16タイプなのですか？</summary><p>4つの軸が2つずつに分かれるからです。</p></details>
-        <details><summary>回答したデータはどのように使われますか？</summary><p>使われません。</p></details>
-        <details><summary>科学的な根拠はありますか？</summary><p>ありません。</p></details>
-        <details><summary>16タイプのうち、どれが一番いいですか？</summary><p>どれも同じくらいです。</p></details>
-        <details><summary>結果に納得できません。</summary><p>もう一度受けてください。数分かかります。</p></details>
-        <details><summary>お風呂で受けてもいいですか？</summary><p>スマホが濡れるのでおすすめしません。</p></details>
-        <details><summary>家族全員で受けてもいいですか？</summary><p>はい。家族全員の数分が失われます。</p></details>
-        <details><summary>履歴書に書いてもいいですか？</summary><p>書けますが、おすすめしません。</p></details>
-        <details><summary>Do demo E Lab とは何ですか？</summary><p>現在調査検討中です。</p></details>
-        <details><summary>問い合わせ先はありますか？</summary><p>ありません。</p></details>
+        <details><summary>いいなと思ったら、友だちにシェアしてもいいですか？</summary><p>はい。友だちの数分も失われます。</p></details>
       </div>
       <button class="cta" data-start style="justify-self:center">テストを受ける</button>
     </div>
@@ -368,6 +363,7 @@ const JOBS = { U: "シャワーを上からかける係", S: "足湯の番人", 
 
 // キャラ: 4文字で見た目が決まる。泡=洗う場所、手=トイレットペーパー、目=閉ボタン、頭=目玉焼き
 function charSVG(code) {
+  if (code === "DEMO") return demoSVG();
   const [w, p, b, e] = code.split("");
   const st = 'stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"';
   const bub = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="var(--paper)" stroke="var(--c2)" stroke-width="2"/>`;
@@ -392,6 +388,18 @@ function charSVG(code) {
     <ellipse cx="96" cy="80" rx="8" ry="6.5" fill="var(--body)" ${st}/>
     ${egg}
     ${bubbles}
+  </svg>`;
+}
+
+function demoSVG() {
+  const st = 'stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"';
+  const star = (x, y, r) => `<path d="M${x} ${y - r} L${x + r * .3} ${y - r * .3} L${x + r} ${y} L${x + r * .3} ${y + r * .3} L${x} ${y + r} L${x - r * .3} ${y + r * .3} L${x - r} ${y} L${x - r * .3} ${y - r * .3} Z" fill="var(--c1)"/>`;
+  return `<svg viewBox="0 0 124 124" role="img" aria-label="DEMOのキャラ">
+    <ellipse cx="44" cy="110" rx="12" ry="7.5" fill="var(--body)" ${st}/><ellipse cx="76" cy="110" rx="12" ry="7.5" fill="var(--body)" ${st}/>
+    <ellipse cx="60" cy="72" rx="38" ry="35" fill="var(--body)" ${st}/>
+    <path d="M42 66 h10 M68 66 h10 M55 81 h10" fill="none" ${st}/>
+    <ellipse cx="96" cy="80" rx="8" ry="6.5" fill="var(--body)" ${st}/>
+    ${star(22, 30, 9)}${star(102, 24, 7)}${star(14, 70, 5)}
   </svg>`;
 }
 
@@ -452,6 +460,7 @@ $("#quiz").addEventListener("change", (e) => {
 });
 
 function judge(ans) {
+  if (ans.every((v) => v === 0)) return { code: "DEMO", pct: [50, 50, 50, 50] };
   const sums = [0, 0, 0, 0];
   QS.forEach(([ax, , dir], i) => { sums[ax] += (ans[i] ?? 0) * dir; });
   const pct = sums.map((s) => Math.round(50 + (s / 9) * 50));
@@ -460,7 +469,69 @@ function judge(ans) {
 }
 
 // 結果
+function renderHidden(pct) {
+  const code = "DEMO", name = "どうでもいい人", tag = "17番目のタイプを見つけました。";
+  const lost = lostTime();
+  const chips = [["D", "どちらでもない型"], ["E", "えらばない型"], ["M", "まんなか型"], ["O", "おしまい型"]];
+  $("#view-result").innerHTML = `
+    <section class="res-hero"><div class="in">
+      <h1>${name}</h1>
+      <p class="typeline">${code}型の性格(17番目)</p>
+      <div class="res-char">${demoSVG()}</div>
+      <div class="letters">
+        ${chips.map(([c, t], i) => `<div style="--lc:var(--${AXC[i]});--ls:var(--${AXC[i]}s)"><b>${c}</b>${t}</div>`).join("")}
+      </div>
+    </div></section>
+
+    <div class="in article">
+      <h2>${name}</h2>
+      <div class="quote"><p>どちらでもない。</p><cite>出典不明</cite></div>
+      <p>${code}(${name})型は、16タイプのどれにも当てはまらない、17番目のタイプです。体をどこから洗うかも、トイレットペーパーをたたむか丸めるかも、エレベーターの「閉」ボタンも、目玉焼きの黄身も、どうでもいいと思っています。</p>
+      <div class="callout">どうでもいい16タイプ診断に、すべて「どうでもいい」と答えたあなたは、この診断をいちばん正しく受けた人です。</div>
+      <p>おめでとうございます。特に何もありません。</p>
+
+      <h2>4つの軸のバランス</h2>
+      <div class="bars">
+        ${AXES.map((x, i) => `
+          <div class="bar-row" style="--lc:var(--${AXC[i]});--ls:var(--${AXC[i]}s)">
+            <div class="bar-labels"><span>${x.a} ${esc(x.la)} <span class="num">50%</span></span><span><span class="num">50%</span> ${esc(x.lb)} ${x.b}</span></div>
+            <div class="bar2"><i style="width:50%"></i></div>
+          </div>`).join("")}
+      </div>
+
+      <h2>相性</h2>
+      <div class="match">${demoSVG()}<div><strong>相性の良いタイプ: 全タイプ</strong><p>どうでもいいので。</p></div></div>
+
+      <h2>もっと詳しく</h2>
+      <dl class="facts">
+        <dt>人口に占める割合</dt><dd>不明。</dd>
+        <dt>向いている仕事</dt><dd>どれでも。</dd>
+        <dt>休日の過ごし方</dt><dd>どちらでもない。</dd>
+        <dt>診断の精度</dt><dd>どちらでもない。</dd>
+        <dt>この診断で失った時間</dt><dd><span class="num">${lost}</span>。どうでもいいですが。</dd>
+      </dl>
+    </div>
+    ${actionsHTML()}`;
+  wireResult(code, name, tag, pct, `どうでもいい16タイプ診断で、17番目のタイプ「${code} ${name}」を見つけました。`);
+}
+
+function actionsHTML() {
+  return `<div class="in res-actions">
+      <button type="button" class="cta" id="snap">結果を画像で保存</button>
+      <div class="card-preview" id="preview" hidden><img id="preview-img" alt="診断結果の画像"><span class="note" id="snap-note"></span></div>
+      <div class="share-row">
+        <a class="xbtn" id="xshare" target="_blank" rel="noopener">X でシェア</a>
+        <button type="button" class="ghost" id="copy">結果の文をコピー</button>
+      </div>
+      <span class="note" id="copied"></span>
+      <button type="button" class="ghost" id="again">もう一度テストを受ける</button>
+      <button type="button" class="textbtn" id="to-top">トップへ戻る</button>
+    </div>
+    <footer class="ft">@ Do demo E Lab</footer>`;
+}
+
 function render({ code, pct }) {
+  if (code === "DEMO") return renderHidden(pct);
   const [name, tag] = NAMES[code];
   const sides = code.split("").map((c, i) => (c === AXES[i].a ? "a" : "b"));
   const pick = (i, a, b) => (sides[i] === "a" ? a : b);
@@ -547,21 +618,13 @@ function render({ code, pct }) {
       </dl>
     </div>
 
-    <div class="in res-actions">
-      <button type="button" class="cta" id="snap">結果を画像で保存</button>
-      <div class="card-preview" id="preview" hidden><img id="preview-img" alt="診断結果の画像"><span class="note" id="snap-note"></span></div>
-      <div class="share-row">
-        <a class="xbtn" id="xshare" target="_blank" rel="noopener">X でシェア</a>
-        <button type="button" class="ghost" id="copy">結果の文をコピー</button>
-      </div>
-      <span class="note" id="copied"></span>
-      <button type="button" class="ghost" id="again">もう一度テストを受ける</button>
-      <button type="button" class="textbtn" id="to-top">トップへ戻る</button>
-    </div>
-    <footer class="ft">@ Do demo E Lab</footer>`;
+    ${actionsHTML()}`;
 
+  wireResult(code, name, tag, pct, `どうでもいい16タイプ診断の結果、私は「${code} ${name}」でした。${verbs.join("、")}人です。`);
+}
+
+function wireResult(code, name, tag, pct, shareText) {
   document.querySelectorAll(".tcard").forEach((el) => el.classList.toggle("me", el.dataset.code === code));
-  const shareText = `どうでもいい16タイプ診断の結果、私は「${code} ${name}」でした。${verbs.join("、")}人です。`;
   $("#xshare").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText + " #どうでもいい16タイプ診断 https://yuto3355.github.io/dodemo-16type/");
   $("#snap").onclick = async () => {
     $("#snap").disabled = true;
