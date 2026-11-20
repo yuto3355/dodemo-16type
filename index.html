@@ -154,6 +154,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .quote { border-left: 4px solid var(--c3); padding: 4px 0 4px 16px; display: grid; gap: 6px; }
 .quote p { font-size: 19px; font-weight: 900; line-height: 1.6; }
 .quote cite { font-style: normal; font-size: 13px; color: var(--muted); }
+.hint { margin-top: 28px; }
 .callout { background: var(--c3s); border-left: 4px solid var(--c3); padding: 14px 18px; font-weight: 700; }
 .bars { display: grid; gap: 14px; }
 .bar-row { display: grid; gap: 4px; font-size: 13px; font-weight: 700; }
@@ -251,6 +252,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <details><summary>もし結果に納得できなかったら？</summary><p>もう一度受けてください。数分かかります。</p></details>
         <details><summary>なぜ「どうでもいい」なのですか？</summary><p>どうでもいいからです。</p></details>
         <details><summary>いい結果が出たら、友だちにシェアしてもいいですか？</summary><p>はい。友だちの数分も失われます。</p></details>
+        <details><summary>Do demo E Lab とは何ですか？</summary><p>現在調査検討中です。</p></details>
+        <details><summary>監修者はいますか？</summary><p>いません。</p></details>
       </div>
       <button class="cta" data-start style="justify-self:center">テストを受ける</button>
     </div>
@@ -272,7 +275,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     </div>
   </section>
   <div class="progress"><div class="in" style="display:grid;gap:6px">
-    <div class="row"><span>回答済み</span><span class="num" id="remain">0 / 12</span></div>
+    <div class="row"><span>回答済み</span><span class="num" id="remain">0 / 16</span></div>
     <div class="bar"><i id="prog"></i></div>
   </div></div>
   <form class="in" id="quiz">
@@ -318,18 +321,22 @@ const GAPS = [
 
 // [軸, 文, 向き] 向き=1 なら「そう思う」が軸の a
 const QS = [
-  [0, "お風呂では、上半身から洗う。", 1],
+  [2, "すぐに「閉」ボタンを押す。", 1],
+  [3, "べつに、黄身は最後まで残さなくていい。", 1],
+  [0, "てっぺんから順に体を洗う。", 1],
+  [2, "ドアは、閉まるのを待つ。", -1],
+  [1, "ちぎったトイレットペーパーは、くしゃっと丸める。", -1],
+  [3, "ラーメンの卵は、最初に割る。", 1],
+  [0, "できれば、足から洗いたい。", -1],
+  [3, "もったいないので、黄身は最後までとっておく。", -1],
+  [1, "なにも考えずに、トイレットペーパーを丸めている。", -1],
+  [2, "いつも、エレベーターではまず「閉」ボタンを探す。", 1],
   [1, "トイレットペーパーは、たたんで使う。", 1],
-  [2, "エレベーターに乗ったら、まず「閉」ボタンを押す。", 1],
-  [3, "目玉焼きの黄身は、最初に割る。", 1],
-  [0, "体を洗うときは、足から始める。", -1],
-  [1, "トイレットペーパーは、くしゃっと丸めて使う。", -1],
-  [2, "電子レンジは鳴るまで待つ。", -1],
-  [3, "目玉焼きの黄身は、最後までとっておく。", -1],
-  [0, "シャワーは頭からかける。", 1],
-  [1, "レシートは、たたんで財布に入れる。", 1],
-  [2, "横断歩道の押しボタンは、押さずに待つ。", -1],
-  [3, "ショートケーキのいちごは、最初に食べる。", 1],
+  [0, "このごろは、上半身から洗っている。", 1],
+  [3, "たいてい、目玉焼きの黄身は最初に割る。", 1],
+  [2, "エレベーターのドアは、自然に閉まるまで待つ。", -1],
+  [1, "よく、レシートを折りたたんで財布に入れる。", 1],
+  [0, "うちでは、シャワーを足元からかける。", -1],
 ];
 const SCALE = [3, 2, 1, 0, -1, -2, -3];
 const CSIZE = [44, 37, 30, 24, 30, 37, 44];
@@ -459,11 +466,17 @@ $("#quiz").addEventListener("change", (e) => {
   if (next && answers()[i + 1] === null) next.scrollIntoView({ behavior: "smooth", block: "center" });
 });
 
+// 隠しタイプは、一度ふつうの結果(と最後のヒント)を見たあとだけ出る
+let unlocked = false;
+try { unlocked = localStorage.getItem("dodemo-unlocked") === "1"; } catch (e) {}
+function unlock() { unlocked = true; try { localStorage.setItem("dodemo-unlocked", "1"); } catch (e) {} }
+
 function judge(ans) {
-  if (ans.every((v) => v === 0)) return { code: "DEMO", pct: [50, 50, 50, 50] };
+  if (unlocked && ans.every((v) => v === 0)) return { code: "DEMO", pct: [50, 50, 50, 50] };
   const sums = [0, 0, 0, 0];
   QS.forEach(([ax, , dir], i) => { sums[ax] += (ans[i] ?? 0) * dir; });
-  const pct = sums.map((s) => Math.round(50 + (s / 9) * 50));
+  const max = [0, 1, 2, 3].map((a) => QS.filter(([ax]) => ax === a).length * 3);
+  const pct = sums.map((s, i) => Math.round(50 + (s / max[i]) * 50));
   const code = pct.map((p, i) => (p >= 50 ? AXES[i].a : AXES[i].b)).join("");
   return { code, pct };
 }
@@ -618,8 +631,10 @@ function render({ code, pct }) {
       </dl>
     </div>
 
+    <div class="in"><div class="callout hint">納得いかない人は、くだらない質問だと思わずに、全16問をもう一度見てください。直感ではなく、頭を使いましょう。</div></div>
     ${actionsHTML()}`;
 
+  unlock();
   wireResult(code, name, tag, pct, `どうでもいい16タイプ診断の結果、私は「${code} ${name}」でした。${verbs.join("、")}人です。`);
 }
 
