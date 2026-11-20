@@ -237,20 +237,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     <div class="in">
       <h2>よくある質問</h2>
       <div class="faq">
-        <details><summary>これ、答えるのに何分かかりますか？</summary><p>数分です。数分だとしても失った時間はもとに戻りませんよ。</p></details>
-        <details><summary>ただで受けられますか？</summary><p>はい。無料です。会員登録も不要です。</p></details>
-        <details><summary>えっと、Do demo E Lab とは何ですか？</summary><p>現在調査検討中です。</p></details>
-        <details><summary>はだかで受けてもいいですか？</summary><p>はい。ただ、お風呂で受けるのはスマホが濡れるのでおすすめしません。</p></details>
-        <details><summary>すぐやめてもいいですか？</summary><p>はい。おすすめです。</p></details>
-        <details><summary>べんりな使い道はありますか？</summary><p>ありません。</p></details>
-        <details><summary>てきとうに答えても、結果は当たりますか？</summary><p>回答どおりの結果が表示されます。</p></details>
-        <details><summary>どうせなら家族全員で受けてもいいですか？</summary><p>はい。家族全員の数分が失われます。</p></details>
-        <details><summary>ちなみに、監修者はいますか？</summary><p>いません。</p></details>
-        <details><summary>らいねんの就活で、履歴書に書いてもいいですか？</summary><p>書けますが、おすすめしません。</p></details>
-        <details><summary>でも、科学的な根拠はあるんですよね？</summary><p>ありません。</p></details>
+        <details><summary>このテスト、答えるのに何分かかりますか？</summary><p>数分です。数分だとしても失った時間はもとに戻りませんよ。</p></details>
+        <details><summary>タイプを変えたいときは？</summary><p>体を洗う順番を変えてください。</p></details>
+        <details><summary>エレベーターの中で受けてもいいですか？</summary><p>はい。「閉」ボタンは押してください。</p></details>
+        <details><summary>はじめて受けるのですが、準備は必要ですか？</summary><p>いりません。</p></details>
+        <details><summary>スマホでも受けられますか？</summary><p>はい。お風呂では受けないでください。</p></details>
+        <details><summary>ベストな答え方はありますか？</summary><p>ありません。直感でどうぞ。</p></details>
+        <details><summary>テストは無料ですか？</summary><p>はい。会員登録もいりません。</p></details>
+        <details><summary>どのタイプが一番いいですか？</summary><p>どれも同じくらいです。</p></details>
+        <details><summary>チームで受けてもいいですか？</summary><p>はい。チーム全員の数分が失われます。</p></details>
+        <details><summary>ランキングはありますか？</summary><p>ありません。</p></details>
+        <details><summary>データの使い道は？</summary><p>ありません。</p></details>
         <details><summary>もし結果に納得できなかったら？</summary><p>もう一度受けてください。数分かかります。</p></details>
         <details><summary>なぜ16タイプなのですか？</summary><p>4つの軸が2つずつに分かれるからです。</p></details>
-        <details><summary>いいなと思ったら、友だちにシェアしてもいいですか？</summary><p>はい。友だちの数分も失われます。</p></details>
+        <details><summary>いい結果が出たら、友だちにシェアしてもいいですか？</summary><p>はい。友だちの数分も失われます。</p></details>
       </div>
       <button class="cta" data-start style="justify-self:center">テストを受ける</button>
     </div>
@@ -598,23 +598,23 @@ function render({ code, pct }) {
 
       <h2>もっと詳しく</h2>
       <dl class="facts">
-        <dt>人口に占める割合</dt><dd><span class="num">6.25%</span></dd>
-        <dt>向いている仕事</dt><dd>${esc(job)}</dd>
-        <dt>同じタイプの有名人</dt><dd>確認されていません。</dd>
-        <dt>休日の過ごし方</dt><dd>休んでいます。</dd>
-        <dt>ストレスを感じるとき</dt><dd>エレベーターがなかなか来ないとき。</dd>
-        <dt>子どものころ</dt><dd>体を洗ってもらっていた可能性があります。</dd>
-        <dt>10年後のあなた</dt><dd>10歳年をとっています。</dd>
-        <dt>前世</dt><dd>確認中です。</dd>
-        <dt>将来の夢</dt><dd>寝ているときに見ます。</dd>
-        <dt>尊敬する人</dt><dd>トイレットペーパーを補充してくれた人。</dd>
-        <dt>運命の人に出会う場所</dt><dd>エレベーターの「閉」ボタンの前。</dd>
-        <dt>人生で大切にしているもの</dt><dd>トイレットペーパーの残り。</dd>
-        <dt>隠れた才能</dt><dd>目玉焼きをきれいに焼ける可能性があります。</dd>
-        <dt>ラッキーカラー</dt><dd>黄身の色。</dd>
-        <dt>このタイプが多い国</dt><dd>現在調査検討中。</dd>
-        <dt>診断の精度</dt><dd><span class="num">100%</span></dd>
-        <dt>この診断で失った時間</dt><dd><span class="num">${lost}</span>。</dd>
+        <dt>人口に占める割合</dt><dd><span class="num">6.25%</span>。覚えなくていいです。</dd>
+        <dt>向いている仕事</dt><dd>なんでもいいです。強いて言えば、${esc(job)}。</dd>
+        <dt>同じタイプの有名人</dt><dd>誰でもいいです。</dd>
+        <dt>休日の過ごし方</dt><dd>休んでいれば、なんでもいいです。</dd>
+        <dt>ストレスを感じるとき</dt><dd>どうでもいいことを聞かれたとき。</dd>
+        <dt>子どものころ</dt><dd>どうでもいいことで泣いていた可能性があります。</dd>
+        <dt>10年後のあなた</dt><dd>10歳年をとっています。それ以外はどうでもいいです。</dd>
+        <dt>前世</dt><dd>どうでもいいです。</dd>
+        <dt>将来の夢</dt><dd>なんでもいいです。寝ているときに見ます。</dd>
+        <dt>尊敬する人</dt><dd>どうでもいいことをよく覚えている人。</dd>
+        <dt>運命の人に出会う場所</dt><dd>どこでもいいです。</dd>
+        <dt>人生で大切にしているもの</dt><dd>どうでもいいもの。</dd>
+        <dt>隠れた才能</dt><dd>どうでもいいことを、ずっと覚えていられる。</dd>
+        <dt>ラッキーカラー</dt><dd>何色でもいいです。</dd>
+        <dt>このタイプが多い国</dt><dd>どこでもいいので、現在調査検討中。</dd>
+        <dt>診断の精度</dt><dd><span class="num">100%</span>。どうでもいいですが。</dd>
+        <dt>この診断で失った時間</dt><dd><span class="num">${lost}</span>。どうでもいい時間でした。</dd>
       </dl>
     </div>
 
