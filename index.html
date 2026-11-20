@@ -562,7 +562,7 @@ function render({ code, pct }) {
 
   document.querySelectorAll(".tcard").forEach((el) => el.classList.toggle("me", el.dataset.code === code));
   const shareText = `どうでもいい16タイプ診断の結果、私は「${code} ${name}」でした。${verbs.join("、")}人です。`;
-  $("#xshare").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText + " #どうでもいい16タイプ診断");
+  $("#xshare").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText + " #どうでもいい16タイプ診断 https://yuto3355.github.io/dodemo-16type/");
   $("#snap").onclick = async () => {
     $("#snap").disabled = true;
     try {
