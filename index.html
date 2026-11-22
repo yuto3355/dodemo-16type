@@ -56,7 +56,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .nav a { padding: 6px 12px; border-radius: 999px; color: var(--ink); text-decoration: none; font-size: 13px; font-weight: 700; }
 .nav a:hover { background: var(--soft); }
 .nav a.go { background: var(--accent); color: #fff; }
-@media (max-width: 460px) { .nav a:not(.go) { display: none; } }
+.nav { align-items: center; }
+.burger { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.burger i, .burger i::before, .burger i::after { display: block; width: 16px; height: 2px; background: var(--ink); border-radius: 2px; position: relative; content: ""; }
+.burger i::before { position: absolute; top: -5px; } .burger i::after { position: absolute; top: 5px; }
+.menu { position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); top: 54px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 6px; display: grid; min-width: 180px; box-shadow: 0 8px 24px rgba(47, 44, 56, .12); z-index: 6; }
+.menu[hidden] { display: none; }
+.menu a { padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 14px; color: var(--ink); text-decoration: none; }
+.menu a:hover { background: var(--soft); }
 
 /* ヒーロー */
 .hero { background: linear-gradient(var(--c0s), var(--bg)); padding-block: 36px 20px; }
@@ -108,7 +115,33 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .faq summary::after { content: "+"; color: var(--accent); font-weight: 900; }
 .faq details[open] summary::after { content: "−"; }
 .faq details p { padding-bottom: 14px; color: var(--muted); }
-.ft { border-top: 1px solid var(--line); padding-block: 22px; font-size: 12px; color: var(--muted); text-align: center; }
+.ft { border-top: 1px solid var(--line); padding-block: 22px; font-size: 12px; color: var(--muted); text-align: center; display: grid; gap: 6px; justify-items: center; }
+.ft .flink { background: none; border: 0; padding: 0; font: inherit; color: var(--muted); text-decoration: underline; cursor: pointer; }
+
+/* お問い合わせ・評価フォーム(よくある入力フォームの見た目) */
+#view-form { background: #efeaf7; min-height: 100vh; padding-block: 24px 56px; }
+#view-form .in { max-width: 640px; display: grid; gap: 12px; }
+.fcard { background: #fff; border: 1px solid #dadce0; border-radius: 8px; padding: 22px 24px; display: grid; gap: 12px; color: #202124; }
+.fcard.head { border-top: 10px solid #7e57c2; }
+.fcard.head h1 { font-size: 26px; font-weight: 500; line-height: 1.35; }
+.fcard.head p { font-size: 14px; }
+.fcard .req-note { color: #d93025; font-size: 13px; border-top: 1px solid #dadce0; padding-top: 10px; }
+.fcard .ft-q { font-size: 16px; font-weight: 500; }
+.fcard .ft-q i { color: #d93025; font-style: normal; margin-left: 4px; }
+.fcard label.opt { display: flex; align-items: center; gap: 12px; font-size: 14px; cursor: pointer; padding-block: 2px; }
+.fcard input[type="radio"] { width: 18px; height: 18px; accent-color: #7e57c2; margin: 0; }
+.fcard textarea { width: 100%; min-height: 72px; border: 0; border-bottom: 1px solid #dadce0; font: inherit; font-size: 14px; padding: 6px 0; resize: vertical; background: transparent; color: #202124; }
+.fcard textarea:focus { outline: none; border-bottom: 2px solid #7e57c2; }
+.fcard.invalid { border-color: #d93025; }
+.fcard .ferr { color: #d93025; font-size: 12px; }
+.frow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.fsubmit { background: #7e57c2; color: #fff; border: 0; border-radius: 4px; padding: 9px 24px; font: inherit; font-weight: 700; cursor: pointer; }
+.fclear { background: none; border: 0; color: #7e57c2; font: inherit; font-weight: 700; cursor: pointer; }
+.fnote { font-size: 12px; color: #5f6368; text-align: center; }
+
+/* 簡素な版(ブラウザの初期の見た目) */
+#view-plain { background: #fff; color: #000; min-height: 100vh; padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); font-family: "Times New Roman", Times, serif; font-size: 16px; line-height: normal; letter-spacing: 0; }
+#view-plain * { all: revert; }
 
 /* 設問 */
 .quiz-head { background: var(--soft); padding-block: 32px 24px; }
@@ -191,9 +224,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   <div class="in">
     <a class="logo" href="#top" id="logo"><i aria-hidden="true"></i>Do demo E Lab</a>
     <nav class="nav">
-      <a href="#top" data-go="types">タイプ一覧</a>
-      <a href="#top" data-go="faq">FAQ</a>
       <a href="#top" data-go="quiz" class="go">テスト</a>
+      <button type="button" class="burger" id="burger" aria-label="メニュー" aria-expanded="false"><i></i></button>
+      <div class="menu" id="menu" hidden>
+        <a href="#top" data-go="types">タイプ一覧</a>
+        <a href="#top" data-go="faq">よくある質問</a>
+        <a href="#top" data-go="quiz">テストを受ける</a>
+        <a href="#top" data-go="form">この診断を評価する</a>
+      </div>
     </nav>
   </div>
 </header>
@@ -293,6 +331,45 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 <!-- 結果 -->
 <main id="view-result" hidden></main>
+
+<!-- お問い合わせ・評価 -->
+<main id="view-form" hidden>
+  <div class="in">
+    <form id="fform" novalidate>
+      <div style="display:grid;gap:12px">
+        <div class="fcard head">
+          <h1>どうでもいい16タイプ診断 評価フォーム</h1>
+          <p>この診断の評価をお聞かせください。いただいた回答は、何にも使われません。</p>
+          <p class="req-note">* 必須の質問です</p>
+        </div>
+        <div id="fqs" style="display:grid;gap:12px"></div>
+        <div class="fcard">
+          <p class="ft-q">ご感想</p>
+          <textarea id="f-free" placeholder="回答を入力"></textarea>
+        </div>
+        <div class="frow">
+          <button type="submit" class="fsubmit">送信</button>
+          <button type="button" class="fclear" id="fclear">フォームをクリア</button>
+        </div>
+        <p class="fnote">このフォームで送信した内容は、どこにも送られません。</p>
+      </div>
+    </form>
+    <div class="fcard head" id="fguide" hidden>
+      <h1>どうでもいい16タイプ診断 評価フォーム</h1>
+      <p>ご回答ありがとうございました。</p>
+      <p>あなたには、よりふさわしいサイトに案内いたします。</p>
+      <p><button type="button" class="fclear" id="fgo">移動しない場合はこちら</button></p>
+    </div>
+    <div class="fcard head" id="fdone" hidden>
+      <h1>どうでもいい16タイプ診断 評価フォーム</h1>
+      <p>回答を記録しました。</p>
+      <p><button type="button" class="fclear" id="fagain">別の回答を送信</button> <button type="button" class="fclear" id="fback">トップへ戻る</button></p>
+    </div>
+  </div>
+</main>
+
+<!-- 簡素な版 -->
+<main id="view-plain" hidden></main>
 
 <script>
 // サイトを開いた時刻(失った時間を測る)
@@ -417,9 +494,10 @@ const $ = (s) => document.querySelector(s);
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 // 画面の切り替え
-const VIEWS = ["top", "quiz", "result"];
+const VIEWS = ["top", "quiz", "result", "form", "plain"];
 function show(v, anchor) {
   VIEWS.forEach((x) => { document.getElementById("view-" + x).hidden = x !== v; });
+  document.querySelector(".hd").hidden = v === "plain";
   if (anchor) document.getElementById(anchor).scrollIntoView({ block: "start" });
   else window.scrollTo(0, 0);
 }
@@ -729,6 +807,66 @@ async function makeCard(code, name, tag, pct) {
 
 // 操作
 document.querySelectorAll("[data-start]").forEach((b) => b.addEventListener("click", () => show("quiz")));
+
+// お問い合わせ・評価フォーム
+const FQS = [
+  ["この診断の満足度を教えてください。", ["とても満足", "満足", "どちらでもない", "不満", "とても不満"]],
+  ["また受けたいと思いますか？", ["はい", "どちらでもない", "いいえ"]],
+  ["友だちにすすめたいですか？", ["はい", "どちらでもない", "いいえ"]],
+  ["診断結果は当たっていましたか？", ["当たっていた", "どちらでもない", "外れていた"]],
+];
+$("#fqs").innerHTML = FQS.map(([q, opts], i) => `
+  <div class="fcard" id="fq${i}">
+    <p class="ft-q">${esc(q)}<i>*</i></p>
+    <div role="radiogroup" aria-label="${esc(q)}">
+      ${opts.map((o, k) => `<label class="opt"><input type="radio" name="f${i}" id="f${i}_${k}" value="${esc(o)}">${esc(o)}</label>`).join("")}
+    </div>
+    <p class="ferr" hidden>これは必須の質問です</p>
+  </div>`).join("");
+function openForm() {
+  $("#fform").hidden = false; $("#fdone").hidden = true; $("#fguide").hidden = true;
+  show("form");
+}
+document.querySelectorAll("[data-form]").forEach((b) => b.addEventListener("click", openForm));
+$("#fclear").onclick = () => { $("#fform").reset(); document.querySelectorAll("#fqs .fcard").forEach((c) => { c.classList.remove("invalid"); c.querySelector(".ferr").hidden = true; }); };
+$("#fagain").onclick = () => { $("#fclear").onclick(); openForm(); };
+$("#fback").onclick = () => show("top");
+$("#fgo").onclick = () => openPlain();
+$("#fform").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const vals = FQS.map((_, i) => document.querySelector(`input[name="f${i}"]:checked`)?.value ?? null);
+  let firstBad = null;
+  vals.forEach((v, i) => {
+    const c = document.getElementById("fq" + i);
+    c.classList.toggle("invalid", v === null); c.querySelector(".ferr").hidden = v !== null;
+    if (v === null && firstBad === null) firstBad = c;
+  });
+  if (firstBad) { firstBad.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  const free = $("#f-free").value.trim();
+  if (vals.every((v) => v === "どちらでもない") && free === "どちらでもない") {
+    $("#fform").hidden = true; $("#fdone").hidden = true; $("#fguide").hidden = false; window.scrollTo(0, 0);
+    setTimeout(() => { if (!$("#view-form").hidden && !$("#fguide").hidden) openPlain(); }, 3000);
+    return;
+  }
+  $("#fform").hidden = true; $("#fdone").hidden = false; window.scrollTo(0, 0);
+});
+
+// 簡素な版と、0個目の診断
+function openPlain() {
+  $("#view-plain").innerHTML = `<h1>どうでもいい診断</h1><p>あなたが何者であるかを診断します。</p><p><button type="button" id="plain-go">診断</button></p>`;
+  show("plain");
+  $("#plain-go").onclick = () => {
+    $("#view-plain").innerHTML = `
+      <h1>診断結果</h1>
+      <p>タイプ　なし</p>
+      <p>あなたは、まだ何者でもありません。</p>
+      <p>どんな選択をしても、あなたはあなたです。</p>
+      <p>失った時間　これまでの全て<br>使える時間　これからずっと<br>このタイプの人口　1人</p>
+      <hr>
+      <p><a href="#top" id="plain-back">もどる</a></p>`;
+    $("#plain-back").onclick = (e) => { e.preventDefault(); show("top"); };
+  };
+}
 $("#quiz").addEventListener("submit", (e) => {
   e.preventDefault();
   const ans = answers();
@@ -751,10 +889,19 @@ $("#rand").addEventListener("click", () => {
   updateLeft();
 });
 $("#logo").addEventListener("click", (e) => { e.preventDefault(); show("top"); });
+$("#burger").addEventListener("click", () => {
+  const m = $("#menu"); m.hidden = !m.hidden; $("#burger").setAttribute("aria-expanded", String(!m.hidden));
+});
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".nav")) { $("#menu").hidden = true; $("#burger").setAttribute("aria-expanded", "false"); }
+});
 document.querySelectorAll(".nav a").forEach((a) => a.addEventListener("click", (e) => {
   e.preventDefault();
+  $("#menu").hidden = true; $("#burger").setAttribute("aria-expanded", "false");
   const g = a.dataset.go;
-  if (g === "quiz") show("quiz"); else show("top", g === "types" ? "sec-types" : "sec-faq");
+  if (g === "quiz") show("quiz");
+  else if (g === "form") openForm();
+  else show("top", g === "types" ? "sec-types" : "sec-faq");
 }));
 updateLeft();
 </script>
