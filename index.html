@@ -213,7 +213,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .num { font-variant-numeric: tabular-nums; }
 .res-actions { display: grid; gap: 12px; justify-items: center; padding-block: 28px 56px; }
 .share-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.xbtn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 900; text-decoration: none; }
+.xbtn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 900; font-size: 14px; text-decoration: none; border: 0; font-family: inherit; cursor: pointer; }
+.share-box { display: grid; gap: 10px; justify-items: center; }
+.share-box .lbl { font-size: 13px; font-weight: 700; color: var(--muted); }
 .card-preview { display: grid; gap: 6px; justify-items: center; }
 .card-preview img { width: 100%; max-width: 360px; border-radius: 12px; box-shadow: 0 2px 12px rgba(47, 44, 56, .15); }
 .ghost { display: inline-block; padding: 10px 26px; border-radius: 999px; background: var(--bg); color: var(--accent-deep); border: 2px solid var(--accent); font: inherit; font-weight: 900; cursor: pointer; }
@@ -375,6 +377,26 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 // サイトを開いた時刻(失った時間を測る)
 const OPENED_AT = Date.now();
 const SITE_URL = "https://yuto3355.github.io/dodemo-16type/";
+// SNS ごとの投稿画面(Facebook は URL だけ渡せる)
+function shareLinks(post) {
+  const t = encodeURIComponent(post);
+  return [
+    ["X", "https://twitter.com/intent/tweet?text=" + t],
+    ["LINE", "https://line.me/R/share?text=" + t],
+    ["Threads", "https://www.threads.net/intent/post?text=" + t],
+    ["Bluesky", "https://bsky.app/intent/compose?text=" + t],
+    ["Facebook", "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SITE_URL)],
+  ];
+}
+// スマホの共有画面(Instagram などへ)。使えないときは文をコピーする
+async function shareOther(post, noteEl) {
+  if (navigator.share) {
+    try { await navigator.share({ text: post }); return; }
+    catch (e) { if (e && e.name === "AbortError") return; }
+  }
+  try { await navigator.clipboard.writeText(post); noteEl.textContent = "文をコピーしました。好きな SNS に貼り付けてください。"; }
+  catch { noteEl.textContent = post; }
+}
 function lostTime() {
   const sec = Math.max(1, Math.round((Date.now() - OPENED_AT) / 1000));
   const m = Math.floor(sec / 60), r = sec % 60;
@@ -626,8 +648,9 @@ function actionsHTML() {
   return `<div class="in res-actions">
       <button type="button" class="cta" id="snap">結果を画像で保存</button>
       <div class="card-preview" id="preview" hidden><img id="preview-img" alt="診断結果の画像"><span class="note" id="snap-note"></span></div>
-      <div class="share-row">
-        <a class="xbtn" id="xshare" target="_blank" rel="noopener">X でシェア</a>
+      <div class="share-box">
+        <span class="lbl" id="share-lbl">シェアする</span>
+        <div class="share-row" id="share-row"></div>
         <button type="button" class="ghost" id="copy">結果の文をコピー</button>
       </div>
       <span class="note" id="copied"></span>
@@ -734,8 +757,9 @@ function render({ code, pct }) {
 function wireResult(code, name, tag, pct, shareText, plainPost) {
   const post = plainPost ? `${shareText}\n${SITE_URL}` : `${shareText} #どうでもいい16タイプ診断\n${SITE_URL}`;
   document.querySelectorAll(".tcard").forEach((el) => el.classList.toggle("me", el.dataset.code === code));
-  $("#xshare").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(post);
-  if (plainPost) $("#xshare").textContent = "シェア";
+  $("#share-row").innerHTML = shareLinks(post).map(([l, h]) => `<a class="xbtn" href="${h}" target="_blank" rel="noopener">${l}</a>`).join("")
+    + `<button type="button" class="xbtn" id="share-other">その他</button>`;
+  $("#share-other").onclick = () => shareOther(post, $("#copied"));
   $("#snap").onclick = async () => {
     $("#snap").disabled = true;
     try {
@@ -866,9 +890,11 @@ function openPlain() {
       <p>どんな選択をしても、あなたはあなたです。</p>
       <p>失った時間　これまでの全て<br>使える時間　これからずっと<br>このタイプの人口　1人</p>
       <hr>
-      <p><a href="https://twitter.com/intent/tweet?text=${encodeURIComponent("？タイプ目の診断に辿り着いた！\n" + SITE_URL)}" target="_blank" rel="noopener">シェア</a></p>
+      <p>シェア: ${shareLinks("？タイプ目の診断に辿り着いた！\n" + SITE_URL).map(([l, h]) => `<a href="${h}" target="_blank" rel="noopener">${l}</a>`).join(" / ")} / <a href="#" id="plain-other">その他</a></p>
+      <p id="plain-note"></p>
       <p><a href="#top" id="plain-back">もどる</a></p>`;
     $("#plain-back").onclick = (e) => { e.preventDefault(); show("top"); };
+    $("#plain-other").onclick = (e) => { e.preventDefault(); shareOther("？タイプ目の診断に辿り着いた！\n" + SITE_URL, $("#plain-note")); };
   };
 }
 $("#quiz").addEventListener("submit", (e) => {
