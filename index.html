@@ -374,6 +374,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <script>
 // サイトを開いた時刻(失った時間を測る)
 const OPENED_AT = Date.now();
+const SITE_URL = "https://yuto3355.github.io/dodemo-16type/";
 function lostTime() {
   const sec = Math.max(1, Math.round((Date.now() - OPENED_AT) / 1000));
   const m = Math.floor(sec / 60), r = sec % 60;
@@ -618,7 +619,7 @@ function renderHidden(pct) {
       </dl>
     </div>
     ${actionsHTML()}`;
-  wireResult(code, name, tag, pct, `どうでもいい16タイプ診断で、17番目のタイプ「${code} ${name}」を見つけました。`);
+  wireResult(code, name, tag, pct, "17タイプ目の診断に辿り着いた！", true);
 }
 
 function actionsHTML() {
@@ -730,9 +731,11 @@ function render({ code, pct }) {
   wireResult(code, name, tag, pct, `どうでもいい16タイプ診断の結果、私は「${code} ${name}」でした。${verbs.join("、")}人です。`);
 }
 
-function wireResult(code, name, tag, pct, shareText) {
+function wireResult(code, name, tag, pct, shareText, plainPost) {
+  const post = plainPost ? `${shareText}\n${SITE_URL}` : `${shareText} #どうでもいい16タイプ診断\n${SITE_URL}`;
   document.querySelectorAll(".tcard").forEach((el) => el.classList.toggle("me", el.dataset.code === code));
-  $("#xshare").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText + " #どうでもいい16タイプ診断 https://yuto3355.github.io/dodemo-16type/");
+  $("#xshare").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(post);
+  if (plainPost) $("#xshare").textContent = "シェア";
   $("#snap").onclick = async () => {
     $("#snap").disabled = true;
     try {
@@ -752,8 +755,8 @@ function wireResult(code, name, tag, pct, shareText) {
     } finally { $("#snap").disabled = false; }
   };
   $("#copy").onclick = async () => {
-    try { await navigator.clipboard.writeText(shareText); $("#copied").textContent = "コピーしました"; }
-    catch { $("#copied").textContent = shareText; }
+    try { await navigator.clipboard.writeText(post); $("#copied").textContent = "コピーしました"; }
+    catch { $("#copied").textContent = post; }
   };
   $("#again").onclick = () => { $("#quiz").reset(); updateLeft(); show("quiz"); };
   $("#to-top").onclick = () => show("top");
@@ -863,6 +866,7 @@ function openPlain() {
       <p>どんな選択をしても、あなたはあなたです。</p>
       <p>失った時間　これまでの全て<br>使える時間　これからずっと<br>このタイプの人口　1人</p>
       <hr>
+      <p><a href="https://twitter.com/intent/tweet?text=${encodeURIComponent("？タイプ目の診断に辿り着いた！\n" + SITE_URL)}" target="_blank" rel="noopener">シェア</a></p>
       <p><a href="#top" id="plain-back">もどる</a></p>`;
     $("#plain-back").onclick = (e) => { e.preventDefault(); show("top"); };
   };
